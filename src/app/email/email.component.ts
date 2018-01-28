@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth, AuthProviders, AuthMethods } from 'angularfire2/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { moveIn, fallIn } from '../router.animations';
 
@@ -16,12 +16,10 @@ export class EmailComponent implements OnInit {
   state: string = '';
   error: any;
 
-  constructor(public af: AngularFireAuth,private router: Router) {
-    this.af.auth.subscribe(auth => { 
-      if(auth) {
-        this.router.navigateByUrl('/members');
-      }
-    });
+  constructor(public af: AngularFireAuth, private router: Router) {
+    if(this.af.authState) {
+      this.router.navigateByUrl('/members');
+    };
   }
 
   ngOnInit() {
@@ -30,14 +28,10 @@ export class EmailComponent implements OnInit {
   onSubmit(formData) {
     if(formData.valid) {
       console.log(formData.value);
-      this.af.auth.signInWithEmailAndPassword({
-        email: formData.value.email,
-        password: formData.value.password
-      },
-      {
-        provider: AuthProviders.Password,
-        method: AuthMethods.Password,
-      }).then(
+      this.af.auth.signInWithEmailAndPassword(
+        formData.value.email,
+        formData.value.password
+      ).then(
         (success) => {
         console.log(success);
         this.router.navigate(['/members']);
