@@ -12,7 +12,7 @@ export const router: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
-    { path: 'login-email', component: EmailComponent },
+    { path: 'email', component: EmailComponent },
     { path: 'members', component: MembersComponent, canActivate: [AuthGuard] }
 
 ]
